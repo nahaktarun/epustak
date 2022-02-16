@@ -7,6 +7,10 @@
 {% load crispy_forms_tags %}
 
 <!--Login--> 
+<a href="/home" >
+  <br>
+<img src=" {% static 'image/logo.png' %}" style="margin: 2; float: none; text-align:center" alt="">
+                            </a>
 <div class="container py-5">
   <h1>Login</h1>
   <form method="POST">
@@ -14,9 +18,10 @@
     {{ login_form|crispy }}
     <button class="btn btn-primary" type="submit">Login</button>
   </form>
-  <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p>
+  {% comment %} <p class="text-center">Don't have an account? <a href="/register">Create an account</a>.</p> {% endcomment %}
 </div>
 </body>
+<br><br><br>
 
 </html>
 

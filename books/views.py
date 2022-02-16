@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 
 from books.models import Book
 from category.models import BookCategory
-
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
 @login_required
 
@@ -15,12 +15,19 @@ def books(request,category_slug=None):
     if category_slug != None:
         categories = get_object_or_404(BookCategory, slug=category_slug)
         books = Book.objects.filter(category=categories)
+        paginator = Paginator(books, 9)
+        page = request.GET.get('page')
+        paged_books = paginator.get_page(page)
         books_count = books.count()
+         
     else:
-         books = Book.objects.all()
+         books = Book.objects.all().order_by('id')
+         paginator = Paginator(books, 9)
+         page = request.GET.get('page')
+         paged_books = paginator.get_page(page)
          books_count = books.count()
     context ={
-        'books': books,
+        'books': paged_books,
         'books_count':books_count,
     }
     return render(request,'books.html', context)

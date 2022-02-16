@@ -1,11 +1,14 @@
 
 
+from unicodedata import category
 from django.shortcuts import  render, redirect
 from .forms import NewUserForm
 from django.contrib.auth import login as auth_login
 from django.contrib import messages
 from django.contrib.auth import login, authenticate,logout  #add this
 from django.contrib.auth.forms import AuthenticationForm #add this
+from books.models import Book
+from django.contrib.auth.decorators import login_required
 
 
 def register_request(request):
@@ -38,9 +41,14 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request=request, template_name="login.html", context={"login_form":form})
 
+@login_required
 
 def home(request):
-    return render(request,'home.html')
+    books = Book.objects.all()
+    context = {
+		'books': books,
+	}
+    return render(request,'home.html',context)
 
 def logout_request(request):
 	logout(request)

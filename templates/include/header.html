@@ -108,6 +108,7 @@
                                             class="fa fa-bars"></i>Browse
                                         categories</a>
                                     <ul class="category-menu">
+                                        
                                         <li class="cat-item"><a href="{%url 'books'%}">All Books</a></li>
                                        {% for category in links %}
                                        
@@ -122,12 +123,15 @@
                                 </div>
                             </nav>
                         </div>
+                        
                         <div class="col-lg-5">
                             <div class="header-search-block">
-                                <input type="text" placeholder="Search entire store here">
-                                <button>Search</button>
+                                <form action="{% url 'search'%}" method="GET">
+                                <input type="text" placeholder="Search entire book library" name="keyword">
+                                <button type="submit">Search</button>
                             </div>
                         </div>
+                        </form>
                         <div class="col-lg-4">
                             <div class="main-navigation flex-lg-right">
                                 <div class="cart-widget">

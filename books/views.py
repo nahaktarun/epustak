@@ -1,9 +1,10 @@
 from multiprocessing import context
-from tkinter import E
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from django.contrib.auth.decorators import login_required
 
 from books.models import Book
+from django.db.models import Q
 from category.models import BookCategory
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 # Create your views here.
@@ -44,3 +45,16 @@ def read_books(request, category_slug, book_slug ):
         
     }
     return render(request, 'read_books.html',context)
+
+
+def search(request):
+    if 'keyword'  in request.GET:
+        keyword = request.GET['keyword']
+        if keyword:
+            books = Book.objects.order_by('-created_date').filter(Q(description__icontains=keyword) | Q(book_name__icontains = keyword))
+            books_count = books.count()
+    context = {
+        'books':books,
+        'books_count':books_count
+    }
+    return render(request,'books.html',context)
